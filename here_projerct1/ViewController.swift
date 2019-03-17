@@ -12,6 +12,49 @@ import CoreLocation
 import Alamofire
 import SwiftyJSON
 
+//func testtest() {
+//
+//    let alert:UIAlertController = UIAlertController(title:"action",
+//                                                    message: "alertView",
+//                                                    preferredStyle: UIAlertController.Style.alert)
+//
+//
+//    let cancelAction:UIAlertAction = UIAlertAction(title: "Cancel",
+//                                                   style: UIAlertAction.Style.cancel,
+//                                                   handler:{
+//                                                    (action:UIAlertAction!) -> Void in
+//                                                    print("Cancel")
+//    })
+//    let defaultAction:UIAlertAction = UIAlertAction(title: "OK",
+//                                                    style: UIAlertAction.Style.default,
+//                                                    handler:{
+//                                                        (action:UIAlertAction!) -> Void in
+//                                                        print("OK")
+//                                                        mainMapView.addAnnotation(myPin)
+//                                                        // ここにコールバック入れる
+//                                                        // 更新処理
+//    })
+//    alert.addAction(cancelAction)
+//    alert.addAction(defaultAction)
+//
+//    //現在の日付を取得
+//    let date:Date = Date()
+//    //日付のフォーマットを指定する。
+//    let format = DateFormatter()
+//    format.dateFormat = "HH:mm"
+//    //日付をStringに変換する
+//    let sDate = format.string(from: date)
+//    print(sDate)
+//
+//    //textfiledの追加
+//    alert.addTextField(configurationHandler: {(text:UITextField!) -> Void in
+//        text.text        = sDate
+//    })
+//
+//    present(alert, animated: true, completion: nil)
+//
+//}
+
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var mainMapView: MKMapView!
     @IBOutlet weak var locatebutton: UIButton!
@@ -56,9 +99,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     // 座標を設定.
 //                    eventPin.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
                     // タイトルを設定.
-                    eventPin.title = "時間"
+                    eventPin.title = "Masakazu Matsumoto"
                     // サブタイトルを設定.
-                    eventPin.subtitle = "サブタイトルggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+                    eventPin.subtitle = "19:00"
                     // MapViewにピンを追加.(いずれ消す)
                     self.mainMapView.addAnnotation(eventPin)
                 }
@@ -172,6 +215,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
         
+
+        
         // 長押しの最中に何度もピンを生成しないようにする.
         if (sender as AnyObject).state != UIGestureRecognizer.State.began {
             return
@@ -189,8 +234,48 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         myPin.title = "Masakazu Matsumoto"
         // サブタイトルを設定.
         myPin.subtitle = "19:00"
-        // MapViewにピンを追加.(いずれ消す)
-        mainMapView.addAnnotation(myPin)
+        
+        let alert:UIAlertController = UIAlertController(title:"action",
+                                                        message: "alertView",
+                                                        preferredStyle: UIAlertController.Style.alert)
+        
+        
+        let cancelAction:UIAlertAction = UIAlertAction(title: "Cancel",
+                                                       style: UIAlertAction.Style.cancel,
+                                                       handler:{
+                                                        (action:UIAlertAction!) -> Void in
+                                                        print("Cancel")
+        })
+        let defaultAction:UIAlertAction = UIAlertAction(title: "OK",
+                                                        style: UIAlertAction.Style.default,
+                                                        handler:{
+                                                            (action:UIAlertAction!) -> Void in
+                                                            print("OK")
+                                                            
+                                                            self.mainMapView.addAnnotation(myPin)
+                                                            // ここにコールバック入れる
+                                                            // 更新処理
+        })
+        alert.addAction(cancelAction)
+        alert.addAction(defaultAction)
+        
+        //現在の日付を取得
+        let date:Date = Date()
+        //日付のフォーマットを指定する。
+        let format = DateFormatter()
+        format.dateFormat = "HH:mm"
+        //日付をStringに変換する
+        let sDate = format.string(from: date)
+        print(sDate)
+        
+        //textfiledの追加
+        alert.addTextField(configurationHandler: {(text:UITextField!) -> Void in
+            text.text        = sDate
+            myPin.subtitle = text.text
+        })
+        
+        present(alert, animated: true, completion: nil)
+        
         
         // 経度、緯度を生成.
         let myLatitude: CLLocationDegrees = myCoordinate.latitude
